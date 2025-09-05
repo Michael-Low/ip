@@ -37,30 +37,30 @@ public class TaskList {
     }
 
     public void addDeadline(String taskDescription) {
-        int index_of_by = taskDescription.indexOf("/by ");
-        if(index_of_by == -1) {
+        int indexOfBy = taskDescription.indexOf("/by ");
+        if(indexOfBy == -1) {
             System.out.println(WRONG_FORMAT_MESSAGE);
             return;
         }
         System.out.println("not another Deadline...");
-        String desc = taskDescription.substring(0, index_of_by);
-        String by = taskDescription.substring(index_of_by + 3);
+        String desc = taskDescription.substring(0, indexOfBy);
+        String by = taskDescription.substring(indexOfBy + 3);
         Deadline newDeadline = new Deadline(desc, by);
         tasks.add(newDeadline);
         System.out.println("Deadline added.");
     }
 
     public void addEvent(String taskDescription) {
-        int index_of_from = taskDescription.indexOf("/from ");
-        int index_of_to = taskDescription.indexOf("/to ");
-        if(index_of_from == -1 || index_of_to == -1 || index_of_from > index_of_to) {
+        int indexOfFrom = taskDescription.indexOf("/from ");
+        int indexOfTo = taskDescription.indexOf("/to ");
+        if(indexOfFrom == -1 || indexOfTo == -1 || indexOfFrom > indexOfTo) {
             System.out.println(WRONG_FORMAT_MESSAGE);
             return;
         }
         System.out.println("not another Event...");
-        String desc = taskDescription.substring(0, index_of_from);
-        String from = taskDescription.substring(index_of_from + 5, index_of_to);
-        String to = taskDescription.substring(index_of_to + 3);
+        String desc = taskDescription.substring(0, indexOfFrom);
+        String from = taskDescription.substring(indexOfFrom + 5, indexOfTo);
+        String to = taskDescription.substring(indexOfTo + 3);
         Event newEvent = new Event(desc, from, to);
         tasks.add(newEvent);
     }
