@@ -9,26 +9,26 @@ public class AsciiAnything {
         boolean exit = false;
         Scanner inputScanner = new Scanner(System.in);
         while(!exit) {
+            System.out.println("---------------------------------------------");
             String input = inputScanner.nextLine();
             if(input.startsWith("mark")) {
                 String taskToMark = input.split(" ")[1];
                 int taskNumber = Integer.parseInt(taskToMark) - 1;
                 taskList.markTask(taskNumber);
-                System.out.println("Sure! I have marked that task as done.");
+                System.out.println("Finally it's over... I have marked that task as done.");
                 continue;
             }
             switch (input) {
                 case "list":
-                    System.out.println("Sure! Here is your list of tasks:");
+                    System.out.println("Fine.... Here is your list of tasks:");
                     taskList.printTasks();
                     break;
                 case "exit":
-                    System.out.println("Bye!");
+                    System.out.println("Come back never.");
                     exit = true;
                     break;
                 default:
-                    System.out.println("I have added this task to your list.");
-                    taskList.addTask(input);
+                    taskList.handleInput(input);
             }
         }
     }

@@ -1,16 +1,21 @@
 public class Task {
-    private boolean isDone;
-    private String task;
-    public Task(String task) {
-        this.task = task;
+    protected boolean isDone;
+    protected String desc;
+
+    public Task(String desc) {
+        this.desc = desc;
         this.isDone = false;
     }
+
+    @Override
     public String toString() {
-        return "[" + (isDone ? "X" : " ") + "] " + this.task;
+        return "[" + (isDone ? "X" : " ") + "] " + this.desc;
     }
-    public String getTask() {
-        return this.task;
+
+    public String getDesc() {
+        return this.desc;
     }
+
     public void setDone(boolean done) {
         isDone = done;
     }
