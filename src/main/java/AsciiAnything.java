@@ -4,7 +4,7 @@ public class AsciiAnything {
     public static void main(String[] args) {
         String welcomeText = "Hello! I'm AsciiAnything\n" +
                 "What can I do for you?\n";
-        System.out.println(welcomeText);
+        System.out.print(welcomeText);
         TaskList taskList = new TaskList();
         boolean exit = false;
         Scanner inputScanner = new Scanner(System.in);
