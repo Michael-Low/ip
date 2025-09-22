@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class TaskList {
     private final ArrayList<Task> tasks = new ArrayList<Task>();
-    private final static String WRONG_FORMAT_MESSAGE = "Your format is wrong, dumbass!";
+    private final static String WRONG_FORMAT_MESSAGE = "Wrong format, dumbass!";
 
     @Override
     public String toString() {
@@ -14,53 +14,56 @@ public class TaskList {
     }
 
     public void handleInput(String input) {
-        if(input.startsWith("Deadline ")) {
-            addDeadline(input.substring("Deadline ".length()));
-            return;
-        }
-        if(input.startsWith("Event ")) {
-            addEvent(input.substring("Event ".length()));
-            return;
-        }
-        if(input.startsWith("Todo ")) {
-            addTodo(input.substring("Todo ".length()));
+        try {
+            if (input.toLowerCase().startsWith("deadline ")) {
+                addDeadline(input.substring("deadline ".length()));
+                return;
+            }
+            if (input.toLowerCase().startsWith("event ")) {
+                addEvent(input.substring("event ".length()));
+                return;
+            }
+            if (input.toLowerCase().startsWith("todo ")) {
+                addTodo(input.substring("todo ".length()));
+                return;
+            }
+        } catch (WrongFormatException e) {
+            System.out.println(WRONG_FORMAT_MESSAGE);
             return;
         }
         System.out.println(WRONG_FORMAT_MESSAGE);
     }
 
-    public void addTodo(String taskDescription) {
-        System.out.println("not another Todo...");
+    public void addTodo(String taskDescription) throws WrongFormatException{
+        System.out.println("Not another todo...");
         Todo newTodo = new Todo(taskDescription);
         tasks.add(newTodo);
         System.out.println("Todo added.");
     }
 
-    public void addDeadline(String taskDescription) {
+    public void addDeadline(String taskDescription) throws WrongFormatException{
         int indexOfBy = taskDescription.indexOf("/by ");
         if(indexOfBy == -1) {
-            System.out.println(WRONG_FORMAT_MESSAGE);
-            return;
+            throw new WrongFormatException();
         }
-        System.out.println("not another Deadline...");
+        System.out.println("Not another deadline...");
         String desc = taskDescription.substring(0, indexOfBy);
-        String by = taskDescription.substring(indexOfBy + 3);
+        String by = taskDescription.substring(indexOfBy + 4);
         Deadline newDeadline = new Deadline(desc, by);
         tasks.add(newDeadline);
         System.out.println("Deadline added.");
     }
 
-    public void addEvent(String taskDescription) {
+    public void addEvent(String taskDescription) throws WrongFormatException{
         int indexOfFrom = taskDescription.indexOf("/from ");
         int indexOfTo = taskDescription.indexOf("/to ");
         if(indexOfFrom == -1 || indexOfTo == -1 || indexOfFrom > indexOfTo) {
-            System.out.println(WRONG_FORMAT_MESSAGE);
-            return;
+            throw new WrongFormatException();
         }
-        System.out.println("not another Event...");
+        System.out.println("Not another event...");
         String desc = taskDescription.substring(0, indexOfFrom);
-        String from = taskDescription.substring(indexOfFrom + 5, indexOfTo);
-        String to = taskDescription.substring(indexOfTo + 3);
+        String from = taskDescription.substring(indexOfFrom + "/from ".length(), indexOfTo);
+        String to = taskDescription.substring(indexOfTo + "/to ".length());
         Event newEvent = new Event(desc, from, to);
         tasks.add(newEvent);
     }
