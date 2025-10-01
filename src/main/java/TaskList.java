@@ -27,6 +27,14 @@ public class TaskList {
                 addTodo(input.substring("todo ".length()));
                 return;
             }
+            if(input.toLowerCase().startsWith("delete ")) {
+                try {
+                    deleteTask(Integer.parseInt(input.substring("delete ".length())));
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input, give me the task's index.");
+                }
+                return;
+            }
         } catch (WrongFormatException e) {
             System.out.println(WRONG_FORMAT_MESSAGE);
             return;
@@ -74,5 +82,15 @@ public class TaskList {
 
     public void markTask(int index) {
         tasks.get(index).setDone(true);
+    }
+
+    public void deleteTask(int index){
+        try {
+            tasks.remove(index - 1);
+            System.out.println("Task deleted.");
+            System.out.println("You now have " + tasks.size() + " tasks.");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Bruh, this task doesn't even exist.");
+        }
     }
 }
