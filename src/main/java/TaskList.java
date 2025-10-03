@@ -1,9 +1,49 @@
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class TaskList {
-    private final ArrayList<Task> tasks = new ArrayList<Task>();
+    private ArrayList<Task> tasks;
     private final static String WRONG_FORMAT_MESSAGE = "Wrong format, dumbass!";
 
+    TaskList() {
+        this.tasks = new ArrayList<Task>();
+    }
+
+    TaskList(String fileName) {
+        this.tasks = new ArrayList<Task>();
+        File file = new File(fileName);
+        if (file.exists()) {
+            try {
+                Scanner s = new Scanner(file);
+                while (s.hasNextLine()) {
+                    String line = s.nextLine();
+                    String[] params = line.split("\\|");
+                    String taskDesc = params[2];
+                    boolean isDone = params[1].equals("1");
+                    switch (params[0]) {
+                        case "E":
+                            String from = params[3];
+                            String to = params[4];
+                            tasks.add(new Event(taskDesc, from, to, isDone));
+                            break;
+                        case "D":
+                            String by = params[3];
+                            tasks.add(new Deadline(taskDesc, by, isDone));
+                            break;
+                        case "T":
+                            tasks.add(new Todo(taskDesc, isDone));
+                            break;
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("File could not be read: " + e.getMessage());
+            }
+        }
+    }
     @Override
     public String toString() {
         String output = "";
@@ -11,6 +51,21 @@ public class TaskList {
             output += (i + 1) + ": " + tasks.get(i).toString() + "\n";
         }
         return output;
+    }
+
+    public void saveToFile(String fileName) {
+        try {
+            FileWriter fw = new FileWriter(fileName);
+            for(int i = 0; i < tasks.size(); i++) {
+                if(i != 0) {
+                    fw.append(System.lineSeparator());
+                }
+                fw.write(tasks.get(i).toSaveFormat());
+            }
+            fw.close();
+        } catch (IOException e) {
+            System.out.println("Something went wrong: " + e.getMessage());
+        }
     }
 
     public void handleInput(String input) {
