@@ -1,30 +1,46 @@
 # AsciiAnything User Guide
 
-// Update the title above to match the actual product name
+![screenshot of the welcome message](images/welcome.png)
 
-// Product screenshot goes here
+AsciiAnything is a cli tool for keeping track of and saving a list of your tasks.
 
-// Product intro goes here
+## Adding tasks
 
-## Adding deadlines
+Add a todo: `todo <description>`
 
-// Describe the action and its outcome.
+Add a deadline: `deadline <description> /by <due date>`
 
-// Give examples of usage
+Add a event: `event <description> /from <start time> /to <end time>`
 
-Example: `keyword (optional arguments)`
+## Listing tasks
 
-// A description of the expected outcome goes here
+Listing all your tasks: `list`
 
+expected output:
+```commandline
+Here is your list of tasks:
+1: [T][ ] this thing
+2: [T][ ] that thing
+3: [D][ ] another thing (by: this time)
+4: [E][ ] one more thing (from: now to: later)
 ```
-expected output
+
+## Deleting tasks
+
+Delete a certain task: `delete <index>`
+
+## Marking tasks as done
+
+Mark a task as done: `mark <index>`
+
+## Finding a specific task using a key word
+
+Search by keyword: `find <keyword>`
+
+```commandline
+The tasks with that description is/are:
+3: [D][ ] another thing (by: this time)
 ```
+## Exiting
 
-## Feature ABC
-
-// Feature details
-
-
-## Feature XYZ
-
-// Feature details
+Exiting the program: `exit`
