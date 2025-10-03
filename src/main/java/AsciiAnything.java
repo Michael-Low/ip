@@ -1,16 +1,17 @@
 
+import AsciiAnything.storage.Storage;
 import AsciiAnything.task.TaskList;
 import AsciiAnything.ui.Ui;
 
 public class AsciiAnything {
     private final Ui ui;
     private final TaskList tasks;
-    private final String filename;
+    private final Storage storage;
 
     public AsciiAnything(String filename) {
         ui = new Ui();
-        tasks = new TaskList(filename);
-        this.filename = filename;
+        storage = new Storage(filename);
+        tasks = storage.loadTaskList();
     }
 
     public void run() {
@@ -32,7 +33,7 @@ public class AsciiAnything {
                     tasks.printTasks();
                     break;
                 case "exit":
-                    tasks.saveToFile(filename);
+                    storage.saveToFile(tasks);
                     System.out.println("Come back never.");
                     exit = true;
                     break;

@@ -1,10 +1,6 @@
 package AsciiAnything.task;
 
 import java.util.ArrayList;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
 import AsciiAnything.exceptions.WrongFormatException;
 
 public class TaskList {
@@ -15,36 +11,16 @@ public class TaskList {
         this.tasks = new ArrayList<Task>();
     }
 
-    public TaskList(String fileName) {
-        this.tasks = new ArrayList<Task>();
-        File file = new File(fileName);
-        if (file.exists()) {
-            try {
-                Scanner s = new Scanner(file);
-                while (s.hasNextLine()) {
-                    String line = s.nextLine();
-                    String[] params = line.split("\\|");
-                    String taskDesc = params[2];
-                    boolean isDone = params[1].equals("1");
-                    switch (params[0]) {
-                        case "E":
-                            String from = params[3];
-                            String to = params[4];
-                            tasks.add(new Event(taskDesc, from, to, isDone));
-                            break;
-                        case "D":
-                            String by = params[3];
-                            tasks.add(new Deadline(taskDesc, by, isDone));
-                            break;
-                        case "T":
-                            tasks.add(new Todo(taskDesc, isDone));
-                            break;
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println("File could not be read: " + e.getMessage());
-            }
-        }
+    public void addTask(Task task) {
+        this.tasks.add(task);
+    }
+
+    public Task get(int index) {
+        return this.tasks.get(index);
+    }
+
+    public int size() {
+        return this.tasks.size();
     }
 
     @Override
@@ -54,21 +30,6 @@ public class TaskList {
             output += (i + 1) + ": " + tasks.get(i).toString() + "\n";
         }
         return output;
-    }
-
-    public void saveToFile(String fileName) {
-        try {
-            FileWriter fw = new FileWriter(fileName);
-            for(int i = 0; i < tasks.size(); i++) {
-                if(i != 0) {
-                    fw.append(System.lineSeparator());
-                }
-                fw.write(tasks.get(i).toSaveFormat());
-            }
-            fw.close();
-        } catch (IOException e) {
-            System.out.println("Something went wrong: " + e.getMessage());
-        }
     }
 
     public void handleInput(String input) {
