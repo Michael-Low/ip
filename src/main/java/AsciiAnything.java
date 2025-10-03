@@ -1,4 +1,6 @@
 
+import AsciiAnything.command.Command;
+import AsciiAnything.parser.Parser;
 import AsciiAnything.storage.Storage;
 import AsciiAnything.task.TaskList;
 import AsciiAnything.ui.Ui;
@@ -18,30 +20,19 @@ public class AsciiAnything {
         ui.printWelcome();
         boolean exit = false;
         while(!exit) {
-            ui.printLine();
-            String input = ui.nextLine();
-            if (input.startsWith("mark")) {
-                String taskToMark = input.split(" ")[1];
-                int taskNumber = Integer.parseInt(taskToMark) - 1;
-                tasks.markTask(taskNumber);
-                System.out.println("Finally it's over... I have marked that task as done.");
-                continue;
-            }
-            switch (input) {
-                case "list":
-                    System.out.println("Fine.... Here is your list of tasks:");
-                    tasks.printTasks();
-                    break;
-                case "exit":
-                    storage.saveToFile(tasks);
-                    System.out.println("Come back never.");
-                    exit = true;
-                    break;
-                default:
-                    tasks.handleInput(input);
+            try {
+                ui.printLine();
+                String input = ui.nextLine();
+                Command c = Parser.parse(input);
+                c.execute(tasks, storage, ui);
+                exit = c.isExit();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
+        storage.saveToFile(tasks);
     }
+
     public static void main(String[] args) {
         new AsciiAnything("./data.txt").run();
     }
