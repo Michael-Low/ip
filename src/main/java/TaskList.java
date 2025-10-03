@@ -90,6 +90,15 @@ public class TaskList {
                 }
                 return;
             }
+            if(input.toLowerCase().startsWith("find ")) {
+                String search = input.substring("find ".length());
+                if(search.isEmpty()) {
+                    System.out.println("Give me something to search");
+                    return;
+                }
+                printFoundTasks(input.substring("find ".length()));
+                return;
+            }
         } catch (WrongFormatException e) {
             System.out.println(WRONG_FORMAT_MESSAGE);
             return;
@@ -129,6 +138,16 @@ public class TaskList {
         String to = taskDescription.substring(indexOfTo + "/to ".length());
         Event newEvent = new Event(desc, from, to);
         tasks.add(newEvent);
+    }
+
+    private void printFoundTasks(String searchTerm) {
+        System.out.println("These are the matching tasks in your list:");
+        for(int i = 0; i < tasks.size(); i++) {
+            Task currentTask = tasks.get(i);
+            if(currentTask.getDesc().toLowerCase().contains(searchTerm.toLowerCase())) {
+                System.out.println(String.valueOf(i + 1) + ": " + tasks.get(i).toString());
+            }
+        }
     }
 
     public void printTasks() {
