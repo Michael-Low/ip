@@ -1,41 +1,47 @@
 
 import AsciiAnything.task.TaskList;
-
-import java.util.Scanner;
+import AsciiAnything.ui.Ui;
 
 public class AsciiAnything {
-    private static final String SAVE_FILE = "./data.txt";
+    private final Ui ui;
+    private final TaskList tasks;
+    private final String filename;
 
-    public static void main(String[] args) {
-        String welcomeText = "Hello! I'm AsciiAnything\n" +
-                "What can I do for you?\n";
-        System.out.print(welcomeText);
-        TaskList taskList = new TaskList(SAVE_FILE);
+    public AsciiAnything(String filename) {
+        ui = new Ui();
+        tasks = new TaskList(filename);
+        this.filename = filename;
+    }
+
+    public void run() {
+        ui.printWelcome();
         boolean exit = false;
-        Scanner inputScanner = new Scanner(System.in);
         while(!exit) {
-            System.out.println("---------------------------------------------");
-            String input = inputScanner.nextLine();
-            if(input.startsWith("mark")) {
+            ui.printLine();
+            String input = ui.nextLine();
+            if (input.startsWith("mark")) {
                 String taskToMark = input.split(" ")[1];
                 int taskNumber = Integer.parseInt(taskToMark) - 1;
-                taskList.markTask(taskNumber);
+                tasks.markTask(taskNumber);
                 System.out.println("Finally it's over... I have marked that task as done.");
                 continue;
             }
             switch (input) {
                 case "list":
                     System.out.println("Fine.... Here is your list of tasks:");
-                    taskList.printTasks();
+                    tasks.printTasks();
                     break;
                 case "exit":
-                    taskList.saveToFile(SAVE_FILE);
+                    tasks.saveToFile(filename);
                     System.out.println("Come back never.");
                     exit = true;
                     break;
                 default:
-                    taskList.handleInput(input);
+                    tasks.handleInput(input);
             }
         }
+    }
+    public static void main(String[] args) {
+        new AsciiAnything("./data.txt").run();
     }
 }
