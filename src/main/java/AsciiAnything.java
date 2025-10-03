@@ -1,11 +1,13 @@
 import java.util.Scanner;
 
 public class AsciiAnything {
+    private static final String SAVE_FILE = "./data.txt";
+
     public static void main(String[] args) {
         String welcomeText = "Hello! I'm AsciiAnything\n" +
                 "What can I do for you?\n";
         System.out.print(welcomeText);
-        TaskList taskList = new TaskList();
+        TaskList taskList = new TaskList(SAVE_FILE);
         boolean exit = false;
         Scanner inputScanner = new Scanner(System.in);
         while(!exit) {
@@ -24,6 +26,7 @@ public class AsciiAnything {
                     taskList.printTasks();
                     break;
                 case "exit":
+                    taskList.saveToFile(SAVE_FILE);
                     System.out.println("Come back never.");
                     exit = true;
                     break;

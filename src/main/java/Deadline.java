@@ -6,6 +6,11 @@ public class Deadline extends Task {
         this.by = by;
     }
 
+    public Deadline(String description, String by, boolean isDone) {
+        super(description, isDone);
+        this.by = by;
+    }
+
     public String getBy() {
         return by;
     }
@@ -18,5 +23,10 @@ public class Deadline extends Task {
     public String toString() {
         return "[D]" + super.toString() +
                 "(by: " + by + ")";
+    }
+
+    @Override
+    public String toSaveFormat() {
+        return "D|" + super.toSaveFormat() + "|" + this.by;
     }
 }

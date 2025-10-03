@@ -7,6 +7,11 @@ public class Task {
         this.isDone = false;
     }
 
+    public Task(String desc, boolean isDone) {
+        this.desc = desc;
+        this.isDone = isDone;
+    }
+
     @Override
     public String toString() {
         return "[" + (isDone ? "X" : " ") + "] " + this.desc;
@@ -18,5 +23,9 @@ public class Task {
 
     public void setDone(boolean done) {
         isDone = done;
+    }
+
+    public String toSaveFormat() {
+        return (this.isDone ? "1": "0") + "|" + this.desc;
     }
 }
